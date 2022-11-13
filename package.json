@@ -1,6 +1,6 @@
 {
   "name": "ts-node-build",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ts-node 项目文件打包工具",
   "keywords": ["ts-node", "build"],
   "main": "dist/src/index.js",
