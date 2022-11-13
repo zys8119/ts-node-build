@@ -1,7 +1,8 @@
 {
   "name": "ts-node-build",
   "version": "0.0.1",
-  "description": "",
+  "description": "ts-node 项目文件打包工具",
+  "keywords": ["ts-node", "build"],
   "main": "dist/src/index.js",
   "types": "src/types/index.d.ts",
   "scripts": {
