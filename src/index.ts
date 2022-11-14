@@ -99,7 +99,10 @@ class BuildServe {
                                 let index = 0;
                                 while (index < rules.length){
                                     const rulesMapPlugin = rules[index];
-                                    transformOptions.code = (await rulesMapPlugin?.transform?.(transformOptions)) || transformOptions.code
+                                    const resCode = (await rulesMapPlugin?.transform?.(transformOptions))
+                                    if(!['[object Undefined]', '[object Null]'].includes(Object.prototype.toString.call(resCode))){
+                                        transformOptions.code = resCode
+                                    }
                                     if(rulesMapPlugin.outFileDir || rulesMapPlugin.outFileName){
                                         const outFilePath = resolve(distDir, rulesMapPlugin.outFileDir || '', file)
                                         const outFilePathParse = parse(outFilePath)
