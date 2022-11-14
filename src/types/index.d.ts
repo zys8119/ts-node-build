@@ -28,6 +28,7 @@ export interface BuildServeConfigOptions {
     rules:RulesMap
     cwd:string
     outDir:string
+    removeDistDir:boolean
     inputFiles:PatternInternal | PatternInternal[]
     inputFilesOptions:OptionsInternal
     completeEnd?(): Promise<any> | void

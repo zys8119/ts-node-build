@@ -25,7 +25,8 @@ class BuildServe {
             outDir:'dist',
             rules:[],
             inputFiles:[],
-            inputFilesOptions:{}
+            inputFilesOptions:{},
+            removeDistDir:true
         }, config)
     }
 
@@ -41,12 +42,14 @@ class BuildServe {
                     log(yellow(`已扫描文件：${files.length} \n打包对象：${
                         Object.prototype.toString.call(this.config.inputFiles) === '[object String]' ? this.config.inputFiles : (this.config.inputFiles as any).map((e,k)=> `\n      文件目标（${k+1}）=> ${e}`)
                     }\n当前工作目录：${this.config.cwd}`))
-                    log(blue(`目录开始删除：${this.config.outDir}`))
-                    await remove(distDir)
-                    log(green(`目录删除完成：${this.config.outDir} `))
-                    log(blue(`目录重新创建：${this.config.outDir} `))
-                    await mkdir(distDir)
-                    log(green(`目录创建完成：${this.config.outDir} `))
+                    if(this.config.removeDistDir){
+                        log(blue(`目录开始删除：${this.config.outDir}`))
+                        await remove(distDir)
+                        log(green(`目录删除完成：${this.config.outDir} `))
+                        log(blue(`目录重新创建：${this.config.outDir} `))
+                        await mkdir(distDir)
+                        log(green(`目录创建完成：${this.config.outDir} `))
+                    }
                     await this.config?.completeBeforeStart?.()
                     const bar = new ProgressBar(`${blue('当前打包进度')} ${green(':percent')} :bar 已处理(${green(':current')}/:total})文件\n`, {
                         total: files.length,
