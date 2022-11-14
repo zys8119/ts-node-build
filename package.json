@@ -30,7 +30,6 @@
     "fast-glob": "^3.2.12",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "ncol": "^0.0.7",
     "progress": "^2.0.3"
   },
   "devDependencies": {
