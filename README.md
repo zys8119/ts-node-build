@@ -6,6 +6,9 @@ ts-node 项目文件打包工具
 
 ```typescript
 import BuildServe from "ts-node-build"
+import {readJSONSync} from "fs-extra"
+import {create as tsNode} from "ts-node"
+import {obfuscate} from "javascript-obfuscator"
 new BuildServe({
     inputFiles:[
         '!(node_modules|.git|.idea|.DS_Store|dist|build|unit_test)/**/**',
@@ -13,7 +16,7 @@ new BuildServe({
     rules:[
         {
             rule:/package\.json$/,
-            transform(transformOptions: TransformOptions){
+            transform(transformOptions){
                 const json = readJSONSync(transformOptions.file)
                 json.main = json.main.replace(/\.ts/img, '.js')
                 json.scripts = Object.fromEntries(Object.entries(json.scripts || {}).map((e:any)=>[e[0],e[1].replace(/ts-node/img, 'node').replace(/\.ts/img, '.js')]))
@@ -23,7 +26,7 @@ new BuildServe({
         {
             rule:/\.ts$/,
             outFileName:"[name].js",
-            transform(transformOptions: TransformOptions){
+            transform(transformOptions){
                 transformOptions.targetFilePath
                 /***
                  * ts代码编译
@@ -39,22 +42,22 @@ new BuildServe({
                     }
                 }).compile(transformOptions.code, transformOptions.targetFileParse.base);
                 const outCode = fileContent.replace(/(require\([^\n]+)(\.)(ts)([^\n]+?\))/g,'$1$2js$4')
-                return outCode
                 /**
                  * 代码加密
                  */
-                // const obfuscationResult = obfuscate(outCode, {
-                //     compact: true,
-                //     numbersToExpressions: true,
-                //     simplify: true,
-                //     stringArrayShuffle: true,
-                //     splitStrings: true,
-                //     stringArrayThreshold: 1,
-                //     unicodeEscapeSequence:true
-                // })
-                // return obfuscationResult.getObfuscatedCode()
+                const obfuscationResult = obfuscate(outCode, {
+                    compact: true,
+                    numbersToExpressions: true,
+                    simplify: true,
+                    stringArrayShuffle: true,
+                    splitStrings: true,
+                    stringArrayThreshold: 1,
+                    unicodeEscapeSequence:true
+                })
+                return obfuscationResult.getObfuscatedCode()
             },
         },
     ],
 }).compile()
+
 ```

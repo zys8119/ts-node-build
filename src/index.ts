@@ -1,4 +1,4 @@
-import Chalk from "chalk"
+import {green, blue, yellow} from  "chalk"
 import {remove, mkdir, mkdirSync, copyFileSync, writeFileSync} from "fs-extra"
 import {sync} from "fast-glob"
 import {resolve, parse} from "path"
@@ -6,13 +6,13 @@ import * as ProgressBar from 'progress'
 import {readFileSync} from "fs";
 import {merge} from "lodash"
 import {createHash} from "crypto"
-import {BuildServeConfig, TransformOptions} from "./types/index"
+import {BuildServeConfig, TransformOptions} from "./types"
 import {version, author} from "../package.json"
 const log = console.log
-export default class BuildServe {
+class BuildServe {
     config:BuildServeConfig
     constructor(config:BuildServeConfig) {
-        log(Chalk.green(`
+        log(green(`
         ts-node-build 打包插件
         作者：${author}
         版本：${version}
@@ -34,21 +34,21 @@ export default class BuildServe {
             (async ()=>{
                 try {
                     const distDir = resolve(this.config.cwd, this.config.outDir)
-                    log(Chalk.blue("正在扫描文件中，请稍等..."))
+                    log(blue("正在扫描文件中，请稍等..."))
                     const files = sync(this.config.inputFiles, merge({
                         cwd:this.config.cwd
                     }, this.config.inputFilesOptions))
-                    log(Chalk.yellow(`已扫描文件：${files.length} \n打包对象：${
+                    log(yellow(`已扫描文件：${files.length} \n打包对象：${
                         Object.prototype.toString.call(this.config.inputFiles) === '[object String]' ? this.config.inputFiles : (this.config.inputFiles as any).map((e,k)=> `\n      文件目标（${k+1}）=> ${e}`)
                     }\n当前工作目录：${this.config.cwd}`))
-                    log(Chalk.blue(`目录开始删除：${this.config.outDir}`))
+                    log(blue(`目录开始删除：${this.config.outDir}`))
                     await remove(distDir)
-                    log(Chalk.green(`目录删除完成：${this.config.outDir} `))
-                    log(Chalk.blue(`目录重新创建：${this.config.outDir} `))
+                    log(green(`目录删除完成：${this.config.outDir} `))
+                    log(blue(`目录重新创建：${this.config.outDir} `))
                     await mkdir(distDir)
-                    log(Chalk.green(`目录创建完成：${this.config.outDir} `))
+                    log(green(`目录创建完成：${this.config.outDir} `))
                     await this.config?.completeBeforeStart?.()
-                    const bar = new ProgressBar(`${Chalk.blue('当前打包进度')} ${Chalk.green(':percent')} :bar 已处理(${Chalk.green(':current')}/:total})文件\n`, {
+                    const bar = new ProgressBar(`${blue('当前打包进度')} ${green(':percent')} :bar 已处理(${green(':current')}/:total})文件\n`, {
                         total: files.length,
                         width: 50
                     })
@@ -56,7 +56,7 @@ export default class BuildServe {
                         bar.tick()
                         if (bar.complete) {
                             await this.config?.completeBeforeEnd?.()
-                            log(Chalk.green('代码打包完成'))
+                            log(green('代码打包完成'))
                             await this.config?.completeEnd?.()
                             resolve1(null)
                         }
@@ -133,3 +133,4 @@ export default class BuildServe {
         })
     }
 }
+export default BuildServe

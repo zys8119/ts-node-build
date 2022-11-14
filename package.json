@@ -2,7 +2,10 @@
   "name": "ts-node-build",
   "version": "0.0.2",
   "description": "ts-node 项目文件打包工具",
-  "keywords": ["ts-node", "build"],
+  "keywords": [
+    "ts-node",
+    "build"
+  ],
   "main": "dist/src/index.js",
   "types": "src/types/index.d.ts",
   "scripts": {
@@ -23,10 +26,11 @@
     "@types/lodash": "^4.14.188",
     "@types/node": "^18.11.9",
     "@types/progress": "^2.0.5",
-    "chalk": "^5.1.2",
+    "chalk": "^4.1.2",
     "fast-glob": "^3.2.12",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
+    "ncol": "^0.0.7",
     "progress": "^2.0.3"
   },
   "devDependencies": {
