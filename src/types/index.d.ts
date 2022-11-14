@@ -29,6 +29,7 @@ export interface BuildServeConfigOptions {
     cwd:string
     outDir:string
     removeDistDir:boolean
+    isOverlay:boolean
     inputFiles:PatternInternal | PatternInternal[]
     inputFilesOptions:OptionsInternal
     completeEnd?(): Promise<any> | void

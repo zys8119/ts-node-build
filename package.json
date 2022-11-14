@@ -1,38 +1,38 @@
 {
-  "name": "ts-node-build",
-  "version": "0.0.8",
-  "description": "ts-node 项目文件打包工具",
-  "keywords": [
-    "ts-node",
-    "build"
-  ],
-  "main": "dist/src/index.js",
-  "types": "src/types/index.d.ts",
-  "scripts": {
-    "build": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zys8119/ts-node-build.git"
-  },
-  "author": "zys8119",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/zys8119/ts-node-build/issues"
-  },
-  "homepage": "https://github.com/zys8119/ts-node-build#readme",
-  "dependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/lodash": "^4.14.188",
-    "@types/node": "^18.11.9",
-    "@types/progress": "^2.0.5",
-    "chalk": "^4.1.2",
-    "fast-glob": "^3.2.12",
-    "fs-extra": "^10.1.0",
-    "lodash": "^4.17.21",
-    "progress": "^2.0.3"
-  },
-  "devDependencies": {
-    "typescript": "^4.8.4"
-  }
+    "name": "ts-node-build",
+    "version": "0.0.9",
+    "description": "ts-node 项目文件打包工具",
+    "keywords": [
+        "ts-node",
+        "build"
+    ],
+    "main": "dist/src/index.js",
+    "types": "src/types/index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zys8119/ts-node-build.git"
+    },
+    "author": "zys8119",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/zys8119/ts-node-build/issues"
+    },
+    "homepage": "https://github.com/zys8119/ts-node-build#readme",
+    "dependencies": {
+        "@types/chalk": "^2.2.0",
+        "@types/lodash": "^4.14.188",
+        "@types/node": "^18.11.9",
+        "@types/progress": "^2.0.5",
+        "chalk": "^4.1.2",
+        "fast-glob": "^3.2.12",
+        "fs-extra": "^10.1.0",
+        "lodash": "^4.17.21",
+        "progress": "^2.0.3"
+    },
+    "devDependencies": {
+        "typescript": "^4.8.4"
+    }
 }

@@ -26,7 +26,8 @@ class BuildServe {
             rules:[],
             inputFiles:[],
             inputFilesOptions:{},
-            removeDistDir:true
+            removeDistDir:true,
+            isOverlay:false
         }, config)
     }
 
@@ -67,7 +68,7 @@ class BuildServe {
                     await Promise.all(files.map((file, fileIndex) => {
                         return (async ()=>{
                             try {
-                                const targetFilePath = resolve(distDir, file.replace(this.config.cwd, '.'))
+                                const targetFilePath = this.config.isOverlay ? file : resolve(distDir, file.replace(this.config.cwd, '.'))
                                 const targetFilePathDir = resolve(targetFilePath, '..')
                                 const targetFileParse = parse(file)
                                 const code = readFileSync(file,"utf-8")
@@ -94,7 +95,9 @@ class BuildServe {
                                 }
                                 const rules = this.config.rules.filter(plug=>plug.rule.test(file)) || []
                                 if(rules.length == 0){
-                                    copyFileSync(file, targetFilePath)
+                                    if(!this.config.isOverlay) {
+                                        copyFileSync(file, targetFilePath)
+                                    }
                                     await barNext()
                                     return
                                 }
@@ -121,6 +124,8 @@ class BuildServe {
                                     index ++
                                 }
                                 if(!isFileWrite){
+                                    console.log(targetFilePath)
+                                    console.log(transformOptions.code, 8888888)
                                     writeFileSync(targetFilePath, transformOptions.code)
                                 }
                                 transformOptions.isTransformEnd = files.length === (fileIndex + 1)
