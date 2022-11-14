@@ -124,8 +124,6 @@ class BuildServe {
                                     index ++
                                 }
                                 if(!isFileWrite){
-                                    console.log(targetFilePath)
-                                    console.log(transformOptions.code, 8888888)
                                     writeFileSync(targetFilePath, transformOptions.code)
                                 }
                                 transformOptions.isTransformEnd = files.length === (fileIndex + 1)
