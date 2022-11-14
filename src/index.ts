@@ -27,7 +27,8 @@ class BuildServe {
             inputFiles:[],
             inputFilesOptions:{},
             removeDistDir:true,
-            isOverlay:false
+            isOverlay:false,
+            isOutDir:true
         }, config)
     }
 
@@ -43,7 +44,7 @@ class BuildServe {
                     log(yellow(`已扫描文件：${files.length} \n打包对象：${
                         Object.prototype.toString.call(this.config.inputFiles) === '[object String]' ? this.config.inputFiles : (this.config.inputFiles as any).map((e,k)=> `\n      文件目标（${k+1}）=> ${e}`)
                     }\n当前工作目录：${this.config.cwd}`))
-                    if(this.config.removeDistDir){
+                    if(this.config.removeDistDir && this.config.isOutDir){
                         log(blue(`目录开始删除：${this.config.outDir}`))
                         await remove(distDir)
                         log(green(`目录删除完成：${this.config.outDir} `))
@@ -72,7 +73,9 @@ class BuildServe {
                                 const targetFilePathDir = resolve(targetFilePath, '..')
                                 const targetFileParse = parse(file)
                                 const code = readFileSync(file,"utf-8")
-                                mkdirSync(targetFilePathDir, {recursive:true})
+                                if(this.config.isOutDir){
+                                    mkdirSync(targetFilePathDir, {recursive:true})
+                                }
                                 const isJson = /package\.json$/.test(file)
                                 const isTs = /\.ts$/.test(file)
                                 const isJs = /\.js$/.test(file)
@@ -95,7 +98,7 @@ class BuildServe {
                                 }
                                 const rules = this.config.rules.filter(plug=>plug.rule.test(file)) || []
                                 if(rules.length == 0){
-                                    if(!this.config.isOverlay) {
+                                    if(!this.config.isOverlay && this.config.isOutDir) {
                                         copyFileSync(file, targetFilePath)
                                     }
                                     await barNext()
@@ -112,18 +115,20 @@ class BuildServe {
                                     if(rulesMapPlugin.outFileDir || rulesMapPlugin.outFileName){
                                         const outFilePath = resolve(distDir, rulesMapPlugin.outFileDir || '', file)
                                         const outFilePathParse = parse(outFilePath)
-                                        if(rulesMapPlugin.outFileDir){
+                                        if(rulesMapPlugin.outFileDir && this.config.isOutDir){
                                             mkdirSync(outFilePathParse.dir, {recursive:true})
                                         }
                                         const outFileName = Object.keys(outFilePathParse).reduce((a, b)=>{
                                             return a.replace(new RegExp(`\\[${b}\\]`,"img"), outFilePathParse[b])
                                         }, (rulesMapPlugin.outFileName || '[name][ext]').replace(/\[hash\]/img,createHash('sha256').update(Date.now().toString()).digest('hex').slice(0,6)))
-                                        writeFileSync(resolve(outFilePathParse.dir, outFileName), transformOptions.code)
+                                        if(this.config.isOutDir) {
+                                            writeFileSync(resolve(outFilePathParse.dir, outFileName), transformOptions.code)
+                                        }
                                         isFileWrite = true
                                     }
                                     index ++
                                 }
-                                if(!isFileWrite){
+                                if(!isFileWrite && this.config.isOutDir){
                                     writeFileSync(targetFilePath, transformOptions.code)
                                 }
                                 transformOptions.isTransformEnd = files.length === (fileIndex + 1)
