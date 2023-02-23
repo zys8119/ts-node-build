@@ -12,12 +12,14 @@ const log = console.log
 class BuildServe {
     config:BuildServeConfig
     constructor(config:BuildServeConfig) {
-        log(green(`
-        ts-node-build 打包插件
-        作者：${author}
-        版本：${version}
-        ======================`.split("\n").map(e=>e.trim()).join('\n')))
         this.mergeConfig(config)
+        if(this.config.isOutInfo){
+        log(green(`
+        功能：${this.config.description || 'ts-node-build 打包插件'}
+        作者：${this.config.author || author}
+        版本：${this.config.version || version}
+        ======================`.split("\n").map(e=>e.trim()).join('\n')))
+        }
     }
     mergeConfig(config:BuildServeConfig){
         this.config = merge<BuildServeConfig, BuildServeConfig>({
@@ -28,7 +30,8 @@ class BuildServe {
             inputFilesOptions:{},
             removeDistDir:true,
             isOverlay:false,
-            isOutDir:true
+            isOutDir:true,
+            isOutInfo:false
         }, config)
     }
 

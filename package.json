@@ -1,6 +1,6 @@
 {
     "name": "ts-node-build",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "ts-node 项目文件打包工具",
     "keywords": [
         "ts-node",
